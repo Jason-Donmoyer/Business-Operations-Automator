@@ -3,3 +3,4 @@ pandas
 python-multipart
 SQLAlchemy
 uvicorn
+apscheduler
