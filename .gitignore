@@ -1,1 +1,8 @@
-/data
+venv/
+__pycache__/
+.env
+*.pyc
+/data/uploads/*
+/data/reports/*
+!data/uploads/.gitkeep
+!data/reports/.gitkeep
