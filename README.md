@@ -38,6 +38,7 @@ The two routes that you will use are POST/upload and GET/report.
 Click the Try It Out button on /uploads and navigate to the csv file that you want to upload.
 The file should be uploaded to the data/uploads folder.
 Once you have uploads, use the /report Try It Out button to clean data and return a json file into data/reports.
+There is sample data to use to try the app out - data/sample_data/sample_sales.csv
 By default the app will loop through the uploads folder and generate new reports every hour as long as the server is running.
 
 ## Project Structure
