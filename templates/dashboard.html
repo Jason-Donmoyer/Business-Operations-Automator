@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>BizOps Dashboard</title>
+</head>
+<body>
+    <main>
+        <section class="main-header"> 
+            <h1 class="main-headline">BizOps</h1>
+            <h2 class="main-subheadline">Business Operations Automator</h2>
+        </section>
+        <section class="card">
+            <h3>Company Name</h3>
+            <label for="company-name">Enter Your Company Name</label>
+            <input id="company-name" type="text" placeholder="Enter company Name">
+        </section>
+        <section class="card">
+            <label for="file-upload">Upload CSV Files</label>
+            <input id="file-upload" type="file">
+        </section>
+        <section class="card">
+            <h3>Reports</h3>
+            <div>
+                <h4>Generate Reports</h4>
+                <p>Select a file from below and click the button to get a report.</p>
+                <button>Get Report</button>
+            </div>
+            <div>
+                <h4>Uploaded Files</h4>
+            </div>
+            <div>
+                <h4>Reports</h4>
+            </div>
+        </section>
+        <section class="card">
+            <h3>Report Scheduler</h3>
+            <p>You can automate this tool to generate reports for your uploaded file on a set schedule</p>
+            <label for="scheduler">Select Schedule</label>
+            <select name="scheduler" id="scheduler">
+                <option value="0.5">30 minutes</option>
+                <option value="1">1 hour</option>
+                <option value="2">2 hours</option>
+                <option value="6">6 hours</option>
+                <option value="12">12 hours</option>
+                <option value="24">once daily</option>
+            </select>
+            <button>Set Schedule</button>
+        </section>
+    </main>
+</body>
+</html>

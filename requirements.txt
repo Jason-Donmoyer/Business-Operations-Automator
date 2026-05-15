@@ -6,3 +6,5 @@ uvicorn
 apscheduler
 pytest
 openpyxl
+jinja2
+aiofiles
