@@ -13,26 +13,31 @@
             <h2 class="main-subheadline">Business Operations Automator</h2>
         </section>
         <section class="card">
-            <h3>Company Name</h3>
-            <label for="company-name">Enter Your Company Name</label>
-            <input id="company-name" type="text" placeholder="Enter company Name">
+            <h3 id="company-name" class="company-name">Company Name</h3>
+            <label id="company-name-label" for="company-name">Enter Your Company Name</label>
+            <input id="company-name-input" type="text" placeholder="Company Name">
+            <button id="set-name-btn" class="set-name-btn">Create Name</button>
+            <div id="change-name" class="change-name">Change Company Name</div>
         </section>
         <section class="card">
             <label for="file-upload">Upload CSV Files</label>
             <input id="file-upload" type="file">
+            <p id="upload-status"></p>
         </section>
         <section class="card">
             <h3>Reports</h3>
             <div>
                 <h4>Generate Reports</h4>
                 <p>Select a file from below and click the button to get a report.</p>
-                <button>Get Report</button>
+                <button id="get-report">Get Report</button>
             </div>
             <div>
                 <h4>Uploaded Files</h4>
+                <div id="uploads"></div>
             </div>
             <div>
                 <h4>Reports</h4>
+                <div id="reports"></div>
             </div>
         </section>
         <section class="card">
@@ -47,8 +52,9 @@
                 <option value="12">12 hours</option>
                 <option value="24">once daily</option>
             </select>
-            <button>Set Schedule</button>
+            <button class="schedule-btn">Set Schedule</button>
         </section>
     </main>
+    <script src="/static/js/dashboard.js"></script>
 </body>
 </html>

@@ -62,6 +62,139 @@ main {
     gap: 1rem;
 }
 
-input[type="text"] {
-    max-width: 50%;
+h3 {
+    font-size: 1.675rem;
+    font-weight: 400;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--text-secondary);
+}
+
+.company-name {
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+p {
+    font-weight: 400;
+    letter-spacing: 0.025rem;
+}
+
+label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+input[type="text"],
+input[type="file"],
+select {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: "DM Sans", sans-serif;
+    font-size: 1rem;
+    color: var(--text-primary);
+    background-color: var(--surface);
+}
+
+input[type="text"],
+select:focus {
+    outline: none;
+    border-color: var(--primary);
+} 
+
+input[placeholder] {
+    color: var(--text-secondary);
+    font-weight: 200;
+}
+
+.change-name {
+    display: none;
+}
+
+#upload-status {
+    display: none;
+}
+
+.success {
+    color: var(--primary);
+}
+
+.error {
+    color: red;
+}
+
+.upload-file-container {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    padding: 1rem 2rem;
+    margin-bottom: 0.25rem;
+    background-color: var(--border);
+    border-radius: 4px;
+    border-bottom: 0.5px solid var(--primary);
+}
+
+.upload-file {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-family: "DM Sans", sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.set-name-btn,
+.schedule-btn {
+    width: 25%;
+    align-self: center;
+}
+
+button:hover {
+    background-color: var(--primary-hover);
+}
+
+.report-file-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.stats-row {
+    display: flex;
+    padding: 4rem;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.total-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    width: 50%;
+    background-color: var(--border);
+    border-radius: 4px;
+}
+
+h5 {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.total-card p {
+    font-weight: 400;
 }
