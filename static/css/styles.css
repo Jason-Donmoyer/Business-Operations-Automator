@@ -172,9 +172,10 @@ button:hover {
     flex-direction: column;
 }
 
-.stats-row {
+.stats-row,
+.products-row {
     display: flex;
-    padding: 4rem;
+    padding: 1rem;
     justify-content: space-between;
     gap: 1rem;
 }
@@ -197,4 +198,37 @@ h5 {
 
 .total-card p {
     font-weight: 400;
+}
+
+.products-wrapper,
+.revenue-wrapper {
+    width: 100%;
+    padding: 2rem;
+}
+
+.product-item,
+.category-item {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid var(--surface);
+}
+
+.product-item span:first-child,
+.category-item span:first-child {
+    font-weight: 500;
+    min-width: 80px;
+    flex: 1;
+}
+
+.category-item span:first-child {
+    font-weight: 500;
+    flex: 1;
+    min-width: 120px;
+}
+
+.product-item span:last-child,
+.category-item span:last-child {
+    text-align: right;
 }

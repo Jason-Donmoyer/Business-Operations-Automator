@@ -99,14 +99,17 @@ getReport.addEventListener('click', () => {
         totalSalesTaxContainer.appendChild(totalSalesTaxValue)
         // Create container for product volume
         const productVolumeContainer = document.createElement('div');
+        productVolumeContainer.className = 'total-card';
         const productVolumeLabel = document.createElement('h5');
         productVolumeLabel.innerHTML = 'Product Volume';
         const productVolumeValues = document.createElement('div');
+        productVolumeValues.className = 'products-wrapper';
         Object.entries(data.product_volume).forEach(([name, volume]) => {
             const productContainer = document.createElement('div');
-            const productName = document.createElement('h6');
+            productContainer.className = 'product-item';
+            const productName = document.createElement('span');
             productName.innerHTML = name;
-            const productValue = document.createElement('p');
+            const productValue = document.createElement('span');
             productValue.innerHTML = volume;
             productContainer.appendChild(productName);
             productContainer.appendChild(productValue);
@@ -116,14 +119,17 @@ getReport.addEventListener('click', () => {
         productVolumeContainer.appendChild(productVolumeValues);
         // Add container for revenue by category
         const revenueByCategoryContainer = document.createElement('div');
+        revenueByCategoryContainer.className = 'total-card';
         const revenueByCategoryLabel = document.createElement('h5');
         revenueByCategoryLabel.innerHTML = 'Revenue By Category';
         const revenueByCategoryValues = document.createElement('div');
+        revenueByCategoryValues.className = 'revenue-wrapper';
         Object.entries(data.revenue_by_category).forEach(([category, revenue]) => {
             const categoryContainer = document.createElement('div');
-            const categoryName = document.createElement('h6');
+            categoryContainer.className = 'category-item';
+            const categoryName = document.createElement('span');
             categoryName.innerHTML = category;
-            const categoryValue = document.createElement('p');
+            const categoryValue = document.createElement('span');
             categoryValue.innerHTML = revenue;
             categoryContainer.appendChild(categoryName);
             categoryContainer.appendChild(categoryValue);
@@ -136,11 +142,14 @@ getReport.addEventListener('click', () => {
         statsDiv.className = 'stats-row';
         statsDiv.appendChild(totalRevenueContainer);
         statsDiv.appendChild(totalSalesTaxContainer);
+        const productsDiv = document.createElement('div');
+        productsDiv.className = 'products-row';
+        productsDiv.appendChild(productVolumeContainer);
+        productsDiv.appendChild(revenueByCategoryContainer);
         // Add containers to reportFileContainer
         reportFileContainer.appendChild(reportFileName);
         reportFileContainer.appendChild(statsDiv);
-        reportFileContainer.appendChild(productVolumeContainer);
-        reportFileContainer.appendChild(revenueByCategoryContainer);
+        reportFileContainer.appendChild(productsDiv);
         // Add report file container to reports container
         reports.appendChild(reportFileContainer);
     });
