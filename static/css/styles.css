@@ -122,6 +122,10 @@ input[placeholder] {
     display: none;
 }
 
+#scheduler-success {
+    display: none;
+}
+
 .success {
     color: var(--primary);
 }

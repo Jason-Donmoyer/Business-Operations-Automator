@@ -8,6 +8,8 @@ const companyNameLabel = document.getElementById('company-name-label');
 const companyNameInput = document.getElementById('company-name-input');
 const setNameButton = document.getElementById('set-name-btn');
 const changeNameButton = document.getElementById('change-name');
+const scheduleButton = document.getElementById('schedule-btn');
+const scheduleSuccessMessage = document.getElementById('scheduler-success');
 
 setNameButton.addEventListener('click', () => {
     companyName.innerHTML = companyNameInput.value;
@@ -152,5 +154,23 @@ getReport.addEventListener('click', () => {
         reportFileContainer.appendChild(productsDiv);
         // Add report file container to reports container
         reports.appendChild(reportFileContainer);
+    });
+});
+
+// Set Schedule Event Listener
+scheduleButton.addEventListener('click', () => {
+    let scheduler = document.getElementById('scheduler');
+    let schedule_value = scheduler.value;
+    let url = `/schedule?interval_value=${schedule_value}`;
+    fetch(url, {
+        method: 'POST'
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Upload failed');
+        return response.json();
+    })
+    .then(data => {
+        scheduleSuccessMessage.style.display = 'inline-block';
+        console.log(data);
     });
 });

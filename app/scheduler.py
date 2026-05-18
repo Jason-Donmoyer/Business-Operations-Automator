@@ -15,5 +15,5 @@ def process_uploads(uploads_dir='data/uploads'):
         generate_report(clean_data, file)
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(process_uploads, "interval", hours=1)
+scheduler.add_job(process_uploads, "interval", hours=1, id="main-job")
 

@@ -43,6 +43,7 @@
         <section class="card">
             <h3>Report Scheduler</h3>
             <p>You can automate this tool to generate reports for your uploaded file on a set schedule</p>
+            <p id="scheduler-success" class="success">Schedule Updated</p>
             <label for="scheduler">Select Schedule</label>
             <select name="scheduler" id="scheduler">
                 <option value="0.5">30 minutes</option>
@@ -52,7 +53,7 @@
                 <option value="12">12 hours</option>
                 <option value="24">once daily</option>
             </select>
-            <button class="schedule-btn">Set Schedule</button>
+            <button id="schedule-btn" class="schedule-btn">Set Schedule</button>
         </section>
     </main>
     <script src="/static/js/dashboard.js"></script>
