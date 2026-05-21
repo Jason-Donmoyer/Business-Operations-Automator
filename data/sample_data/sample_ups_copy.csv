@@ -1,0 +1,21 @@
+product,units_sold,gross_sales,category,sales_tax,revenue
+Item A,5,500,electronics,30,470
+Item B,10,800,  Hardware,20,780
+Item B,10,800,  Hardware,20,780
+Item C,200,,tools,,
+Item D,,,,,
+Item         E,40,400,tools,35,365
+Item F,100,1000,,50,950
+item g,25,250,Electronics,15,235
+Item H,,,Hardware,,
+Item I,60,600,  tools  ,40,560
+Item J,15,150,electronics,10,140
+Item J,15,150,electronics,10,140
+item k,80,800,Hardware,45,755
+Item L,,,,,
+Item M,30,300,Electronics  ,20,280
+Item N,12,120,tools,8,112
+item n,12,120,tools,8,112
+Item O,50,500,  Hardware  ,30,470
+Item P,,,electronics,,
+Item Q,90,900,Electronics,55,845
