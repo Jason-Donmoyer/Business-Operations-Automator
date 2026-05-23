@@ -140,7 +140,12 @@ if (localStorage.getItem('reports')) {
     });
 }
 
+if (localStorage.getItem('scheduler')) {
+    document.getElementById('scheduler').value = localStorage.getItem('scheduler');
+}
 
+
+// Event listeners
 setNameButton.addEventListener('click', () => {
     companyName.innerHTML = companyNameInput.value;
     companyNameLabel.style.display = 'none';
@@ -227,9 +232,10 @@ getReport.addEventListener('click', () => {
 
 // Set Schedule Event Listener
 scheduleButton.addEventListener('click', () => {
-    let scheduler = document.getElementById('scheduler');
-    let schedule_value = scheduler.value;
-    let url = `/schedule?interval_value=${schedule_value}`;
+    const scheduler = document.getElementById('scheduler');
+    const schedule_value = scheduler.value;
+    localStorage.setItem('scheduler', schedule_value);
+    const url = `/schedule?interval_value=${schedule_value}`;
     fetch(url, {
         method: 'POST'
     })
