@@ -3,6 +3,7 @@ const uploadStatus = document.getElementById('upload-status');
 const uploads = document.getElementById('uploads');
 const reports = document.getElementById('reports');
 const getReport = document.getElementById('get-report');
+const checkedStatus = document.getElementById('checked-status');
 const companyName = document.getElementById('company-name');
 const companyNameLabel = document.getElementById('company-name-label');
 const companyNameInput = document.getElementById('company-name-input');
@@ -164,6 +165,9 @@ changeNameButton.addEventListener('click', () => {
 });
 
 fileUpload.addEventListener('change', () => {
+    if (!fileUpload.files[0]) {
+        return;
+    }
     const formData = new FormData();
     formData.append('file', fileUpload.files[0]);
     const filename = fileUpload.files[0].name;
@@ -180,6 +184,9 @@ fileUpload.addEventListener('change', () => {
         uploadStatus.style.display = 'inline-block';
         uploadStatus.innerHTML = 'upload successful!';
         uploadStatus.className = 'success';
+        setTimeout(() => {
+            uploadStatus.style.display = 'none';
+        }, 3000);
         const uploadFileContainer = document.createElement('div');
         uploadFileContainer.className = 'upload-file-container';
         const uploadFile = document.createElement('p');
@@ -205,6 +212,14 @@ fileUpload.addEventListener('change', () => {
 getReport.addEventListener('click', () => {
     const checkedValue = document.querySelectorAll('input[type="checkbox"]:checked');
     // const filename = checkedValue[0].value;
+    // Check if any checkboxes are checked
+    if (checkedValue.length === 0) {
+        checkedStatus.style.display = 'inline-block';
+        setTimeout(() => {
+            checkedStatus.style.display = 'none';
+        }, 3000);
+        return;
+    }
     checkedValue.forEach(checkbox => {
         const filename = checkbox.value;
         fetch(`/report?file_name=${filename}`, {
@@ -234,6 +249,15 @@ getReport.addEventListener('click', () => {
 scheduleButton.addEventListener('click', () => {
     const scheduler = document.getElementById('scheduler');
     const schedule_value = scheduler.value;
+    if (!schedule_value) {
+        scheduleSuccessMessage.innerHTML = 'Please select a schedule interval.';
+        scheduleSuccessMessage.className= 'error';
+        scheduleSuccessMessage.style.display = 'inline-block';
+        setTimeout(() => {
+            scheduleSuccessMessage.style.display = 'none';
+        }, 3000);
+        return;
+    }
     localStorage.setItem('scheduler', schedule_value);
     const url = `/schedule?interval_value=${schedule_value}`;
     fetch(url, {
@@ -245,6 +269,9 @@ scheduleButton.addEventListener('click', () => {
     })
     .then(data => {
         scheduleSuccessMessage.style.display = 'inline-block';
+        setTimeout(() => {
+            scheduleSuccessMessage.style.display = 'none';
+        }, 3000);
         console.log(data);
     });
 });

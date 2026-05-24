@@ -122,6 +122,10 @@ input[placeholder] {
     display: none;
 }
 
+#checked-status {
+    display: none;
+}
+
 #scheduler-success {
     display: none;
 }
