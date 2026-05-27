@@ -165,10 +165,24 @@ button {
     cursor: pointer;
 }
 
+.delete-upload-btn {
+    margin-left: auto;
+}
+
+.delete-report-btn {
+    width: 25%;
+}
+
 .set-name-btn,
 .schedule-btn {
     width: 25%;
     align-self: center;
+}
+
+.delete-all-btn {
+    background-color: red;
+    margin-left: 1rem;
+    margin-top: 2rem;
 }
 
 button:hover {
@@ -178,6 +192,13 @@ button:hover {
 .report-file-container {
     display: flex;
     flex-direction: column;
+}
+
+.report-link-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
 }
 
 .stats-row,

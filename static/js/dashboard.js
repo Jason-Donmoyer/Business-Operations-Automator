@@ -15,6 +15,8 @@ const reportStore = {};
 const modalOverlay = document.getElementById('modal-overlay');
 const modalContent = document.getElementById('modal-content');
 const modalCloseButton = document.getElementById('modal-close');
+const deleteAllReportsButton = document.getElementById('delete-all-reports-btn');
+const deleteAllUploadsButton = document.getElementById('delete-all-uploads-btn');
 
 function createReportLinks(filename, data) {
     modalContent.innerHTML = ''
@@ -121,9 +123,21 @@ if (localStorage.getItem('uploads')) {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.value = filename;
+        const deleteUploadButton = document.createElement('button');
+        deleteUploadButton.innerHTML = 'Delete File';
+        deleteUploadButton.className = 'delete-upload-btn';
         uploadFileContainer.appendChild(checkbox);
         uploadFileContainer.appendChild(uploadFile);
+        uploadFileContainer.appendChild(deleteUploadButton);
         uploads.appendChild(uploadFileContainer);
+        // Delete upload button
+        deleteUploadButton.addEventListener('click', () => {
+            if (!confirm('Are you sure you want to delete this file?')) return;
+            uploadFileContainer.remove();
+            const savedUploads = JSON.parse(localStorage.getItem('uploads'));
+            const updatedUploads = savedUploads.filter(uploads => uploads !== filename);
+            localStorage.setItem('uploads', JSON.stringify(updatedUploads));
+        });
     });
 }
 
@@ -131,12 +145,27 @@ if (localStorage.getItem('reports')) {
     const savedReports = JSON.parse(localStorage.getItem('reports'));
     Object.entries(savedReports).forEach(([filename, data]) => {
         reportStore[filename] = data;
+        const reportLinkContainer = document.createElement('div');
+        reportLinkContainer.className = 'report-link-container';
         const reportLink = document.createElement('a');
         reportLink.className = 'report-link';
         reportLink.innerHTML = filename;
-        reports.appendChild(reportLink);
+        reportLinkContainer.appendChild(reportLink);
         reportLink.addEventListener('click', () => {
             createReportLinks(filename, data);
+        });
+        const deleteReportButton = document.createElement('button');
+        deleteReportButton.innerHTML = 'Delete Report';
+        deleteReportButton.className = 'delete-report-btn';
+        reportLinkContainer.appendChild(deleteReportButton);
+        reports.appendChild(reportLinkContainer);
+        deleteReportButton.addEventListener('click', () => {
+            if (!confirm("Are you sure you want to delete this report?")) return;
+            reportLinkContainer.remove();
+            const savedReports = JSON.parse(localStorage.getItem('reports'));
+            delete savedReports[filename];
+            localStorage.setItem('reports', JSON.stringify(savedReports));
+            delete reportStore[filename];
         });
     });
 }
@@ -181,6 +210,8 @@ fileUpload.addEventListener('change', () => {
     })
     .then(data => {
         console.log(data);
+        const savedUploads = JSON.parse(localStorage.getItem('uploads') || '[]');
+        if (savedUploads.includes(filename)) return;
         uploadStatus.style.display = 'inline-block';
         uploadStatus.innerHTML = 'upload successful!';
         uploadStatus.className = 'success';
@@ -195,12 +226,24 @@ fileUpload.addEventListener('change', () => {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.value = filename;
+        const deleteUploadButton = document.createElement('button');
+        deleteUploadButton.innerHTML = 'Delete File';
+        deleteUploadButton.className = 'delete-upload-btn';
         uploadFileContainer.appendChild(checkbox);
         uploadFileContainer.appendChild(uploadFile);
+        uploadFileContainer.appendChild(deleteUploadButton);
         uploads.appendChild(uploadFileContainer);
-        const savedUploads = JSON.parse(localStorage.getItem('uploads') || '[]');
         savedUploads.push(filename);
         localStorage.setItem('uploads', JSON.stringify(savedUploads));
+        // Delete upload button
+        deleteUploadButton.addEventListener('click', () => {
+            if (!confirm('Are you sure you want to delete this file?')) return;
+            uploadFileContainer.remove();
+            const savedUploads = JSON.parse(localStorage.getItem('uploads'));
+            // console.log(typeof savedUploads, savedUploads);
+            const updatedUploads = savedUploads.filter(uploads => uploads !== filename);
+            localStorage.setItem('uploads', JSON.stringify(updatedUploads));
+        });
     })
     .catch(error => {
         uploadStatus.style.display = 'inline-block';
@@ -222,6 +265,7 @@ getReport.addEventListener('click', () => {
     }
     checkedValue.forEach(checkbox => {
         const filename = checkbox.value;
+        if (reportStore[filename]) return;
         fetch(`/report?file_name=${filename}`, {
             method: 'GET'
         })
@@ -231,19 +275,50 @@ getReport.addEventListener('click', () => {
         })
         .then(data => {
             console.log(data);
+            const reportLinkContainer = document.createElement('div');
+            reportLinkContainer.className = 'report-link-container';
             const reportLink = document.createElement('a');
             reportLink.className = 'report-link';
             reportLink.innerHTML = filename;
             reportStore[filename] = data;
             localStorage.setItem('reports', JSON.stringify(reportStore));
-            reports.appendChild(reportLink);
+            const deleteReportButton = document.createElement('button');
+            deleteReportButton.innerHTML = 'Delete Report';
+            deleteReportButton.className = 'delete-report-btn';
+            reportLinkContainer.appendChild(reportLink);
+            reportLinkContainer.appendChild(deleteReportButton);
+            reports.appendChild(reportLinkContainer);
             reportLink.addEventListener('click', (e) => {
                 createReportLinks(filename, data);
             });
+            deleteReportButton.addEventListener('click', () => {
+                if (!confirm("Are you sure you want to delete this report?")) return;
+                reportLinkContainer.remove();
+                const savedReports = JSON.parse(localStorage.getItem('reports'));
+                delete savedReports[filename];
+                localStorage.setItem('reports', JSON.stringify(savedReports));
+                delete reportStore[filename];
+            });
+            
         });
     });
 });
 
+// Delete all buttons
+deleteAllUploadsButton.addEventListener('click', () => {
+    if (!uploads.hasChildNodes()) return;
+    if (!confirm("Are you sure you want to delete all uploads?")) return;
+    uploads.innerHTML = '';
+    localStorage.removeItem('uploads');
+});
+
+deleteAllReportsButton.addEventListener('click', () => {
+    if (!reports.hasChildNodes()) return;
+    if (!confirm("Are you sure you want to delete all reports?")) return;
+    reports.innerHTML = '';
+    Object.keys(reportStore).forEach(key => delete reportStore[key]);
+    localStorage.removeItem('reports');
+});
 
 // Set Schedule Event Listener
 scheduleButton.addEventListener('click', () => {
@@ -277,8 +352,15 @@ scheduleButton.addEventListener('click', () => {
 });
 
 
-
+// Close modal button
 modalCloseButton.addEventListener('click', () => {
     modalOverlay.style.display = 'none';
 });
+
+// if (reports.hasChildNodes()) {
+//     const deleteAllReportsButton = document.createElement('button');
+//     deleteAllReportsButton.innerHTML = 'Delete All';
+//     deleteAllReportsButton.className = 'delete-all-btn';
+//     reports.appendChild(deleteAllReportsButton);
+// } 
 
