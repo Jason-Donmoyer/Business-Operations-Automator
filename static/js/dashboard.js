@@ -200,6 +200,17 @@ fileUpload.addEventListener('change', () => {
     const formData = new FormData();
     formData.append('file', fileUpload.files[0]);
     const filename = fileUpload.files[0].name;
+    const savedUploads = JSON.parse(localStorage.getItem('uploads') || '[]');
+        if (savedUploads.includes(filename)) {
+            uploadStatus.style.display = 'inline-block';
+            uploadStatus.innerHTML = 'File already uploaded.'
+            uploadStatus.className = 'error';
+            setTimeout(() => {
+                uploadStatus.style.display = 'none';
+                uploadStatus.innerHTML = '';
+            }, 3000);
+            return;
+        }
     fetch('/upload', {
         method: 'POST',
         body: formData
@@ -210,8 +221,17 @@ fileUpload.addEventListener('change', () => {
     })
     .then(data => {
         console.log(data);
-        const savedUploads = JSON.parse(localStorage.getItem('uploads') || '[]');
-        if (savedUploads.includes(filename)) return;
+        // const savedUploads = JSON.parse(localStorage.getItem('uploads') || '[]');
+        // if (savedUploads.includes(filename)) {
+        //     uploadStatus.style.display = 'inline-block';
+        //     uploadStatus.innerHTML = 'File already uploaded.'
+        //     uploadStatus.className = 'error';
+        //     setTimeout(() => {
+        //         uploadStatus.style.display = 'none';
+        //         uploadStatus.innerHTML = '';
+        //     }, 3000);
+        //     return;
+        // }
         uploadStatus.style.display = 'inline-block';
         uploadStatus.innerHTML = 'upload successful!';
         uploadStatus.className = 'success';
@@ -250,6 +270,7 @@ fileUpload.addEventListener('change', () => {
         uploadStatus.innerHTML = 'upload failed';
         uploadStatus.className = 'error';
     });
+    fileUpload.value = '';
 });
 
 getReport.addEventListener('click', () => {
@@ -258,14 +279,26 @@ getReport.addEventListener('click', () => {
     // Check if any checkboxes are checked
     if (checkedValue.length === 0) {
         checkedStatus.style.display = 'inline-block';
+        checkedStatus.innerHTML = 'Please select a file to generate report.';
         setTimeout(() => {
             checkedStatus.style.display = 'none';
+            checkedStatus.innerHTML = '';
         }, 3000);
         return;
     }
     checkedValue.forEach(checkbox => {
         const filename = checkbox.value;
-        if (reportStore[filename]) return;
+        // Check if report already exists
+        if (reportStore[filename]) {
+            checkedStatus.style.display = 'inline-block';
+            checkedStatus.innerHTML = `Report for ${filename} has already been generated.`;
+            setTimeout(() => {
+                checkedStatus.style.display = 'none';
+                checkedStatus.innerHTML = '';
+            }, 3000);
+            return;
+        }
+        reportStore[filename] = true;
         fetch(`/report?file_name=${filename}`, {
             method: 'GET'
         })
@@ -298,8 +331,7 @@ getReport.addEventListener('click', () => {
                 delete savedReports[filename];
                 localStorage.setItem('reports', JSON.stringify(savedReports));
                 delete reportStore[filename];
-            });
-            
+            });   
         });
     });
 });
