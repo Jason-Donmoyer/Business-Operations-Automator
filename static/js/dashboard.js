@@ -18,9 +18,37 @@ const modalCloseButton = document.getElementById('modal-close');
 const deleteAllReportsButton = document.getElementById('delete-all-reports-btn');
 const deleteAllUploadsButton = document.getElementById('delete-all-uploads-btn');
 
+// Create Uploads function
+function createUploadItems(filename) {
+    const uploadFileContainer = document.createElement('div');
+    uploadFileContainer.className = 'upload-file-container';
+    const uploadFile = document.createElement('p');
+    uploadFile.className = 'upload-file';
+    uploadFile.innerHTML = filename;
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.value = filename;
+    const deleteUploadButton = document.createElement('button');
+    deleteUploadButton.innerHTML = 'Delete File';
+    deleteUploadButton.className = 'delete-upload-btn';
+    uploadFileContainer.appendChild(checkbox);
+    uploadFileContainer.appendChild(uploadFile);
+    uploadFileContainer.appendChild(deleteUploadButton);
+    // Delete upload button
+    deleteUploadButton.addEventListener('click', () => {
+        if (!confirm('Are you sure you want to delete this file?')) return;
+        uploadFileContainer.remove();
+        const savedUploads = JSON.parse(localStorage.getItem('uploads'));
+        const updatedUploads = savedUploads.filter(uploads => uploads !== filename);
+        localStorage.setItem('uploads', JSON.stringify(updatedUploads));
+    });
+    return uploadFileContainer;
+}
+
+
+// Create Reports function
 function createReportLinks(filename, data) {
     modalContent.innerHTML = ''
-    // const reportData = reportStore[e.target.innerHTML];
     // Create Modal Content
     const reportFileContainer = document.createElement('div')
     reportFileContainer.className = 'report-file-container';
@@ -103,6 +131,33 @@ function createReportLinks(filename, data) {
     modalOverlay.style.display = 'flex';
 }
 
+// Create report link container function
+function createReportLinkContainer(filename) {
+    const reportLinkContainer = document.createElement('div');
+    reportLinkContainer.className = 'report-link-container';
+    const reportLink = document.createElement('a');
+    reportLink.className = 'report-link';
+    reportLink.innerHTML = filename;
+    reportLinkContainer.appendChild(reportLink);
+    reportLink.addEventListener('click', () => {
+        createReportLinks(filename, reportStore[filename]);
+    });
+    const deleteReportButton = document.createElement('button');
+    deleteReportButton.innerHTML = 'Delete Report';
+    deleteReportButton.className = 'delete-report-btn';
+    reportLinkContainer.appendChild(deleteReportButton);
+    // reports.appendChild(reportLinkContainer);
+    deleteReportButton.addEventListener('click', () => {
+        if (!confirm("Are you sure you want to delete this report?")) return;
+        reportLinkContainer.remove();
+        const savedReports = JSON.parse(localStorage.getItem('reports'));
+        delete savedReports[filename];
+        localStorage.setItem('reports', JSON.stringify(savedReports));
+        delete reportStore[filename];
+    });
+    return reportLinkContainer;
+}
+
 // localstorage
 if (localStorage.getItem('companyName')) {
     companyName.innerHTML = localStorage.getItem('companyName');
@@ -115,29 +170,7 @@ if (localStorage.getItem('companyName')) {
 if (localStorage.getItem('uploads')) {
     const savedUploads = JSON.parse(localStorage.getItem('uploads'));
     savedUploads.forEach(filename => {
-        const uploadFileContainer = document.createElement('div');
-        uploadFileContainer.className = 'upload-file-container';
-        const uploadFile = document.createElement('p');
-        uploadFile.className = 'upload-file';
-        uploadFile.innerHTML = filename;
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.value = filename;
-        const deleteUploadButton = document.createElement('button');
-        deleteUploadButton.innerHTML = 'Delete File';
-        deleteUploadButton.className = 'delete-upload-btn';
-        uploadFileContainer.appendChild(checkbox);
-        uploadFileContainer.appendChild(uploadFile);
-        uploadFileContainer.appendChild(deleteUploadButton);
-        uploads.appendChild(uploadFileContainer);
-        // Delete upload button
-        deleteUploadButton.addEventListener('click', () => {
-            if (!confirm('Are you sure you want to delete this file?')) return;
-            uploadFileContainer.remove();
-            const savedUploads = JSON.parse(localStorage.getItem('uploads'));
-            const updatedUploads = savedUploads.filter(uploads => uploads !== filename);
-            localStorage.setItem('uploads', JSON.stringify(updatedUploads));
-        });
+        uploads.appendChild(createUploadItems(filename));
     });
 }
 
@@ -145,28 +178,7 @@ if (localStorage.getItem('reports')) {
     const savedReports = JSON.parse(localStorage.getItem('reports'));
     Object.entries(savedReports).forEach(([filename, data]) => {
         reportStore[filename] = data;
-        const reportLinkContainer = document.createElement('div');
-        reportLinkContainer.className = 'report-link-container';
-        const reportLink = document.createElement('a');
-        reportLink.className = 'report-link';
-        reportLink.innerHTML = filename;
-        reportLinkContainer.appendChild(reportLink);
-        reportLink.addEventListener('click', () => {
-            createReportLinks(filename, data);
-        });
-        const deleteReportButton = document.createElement('button');
-        deleteReportButton.innerHTML = 'Delete Report';
-        deleteReportButton.className = 'delete-report-btn';
-        reportLinkContainer.appendChild(deleteReportButton);
-        reports.appendChild(reportLinkContainer);
-        deleteReportButton.addEventListener('click', () => {
-            if (!confirm("Are you sure you want to delete this report?")) return;
-            reportLinkContainer.remove();
-            const savedReports = JSON.parse(localStorage.getItem('reports'));
-            delete savedReports[filename];
-            localStorage.setItem('reports', JSON.stringify(savedReports));
-            delete reportStore[filename];
-        });
+        reports.appendChild(createReportLinkContainer(filename));
     });
 }
 
@@ -221,49 +233,9 @@ fileUpload.addEventListener('change', () => {
     })
     .then(data => {
         console.log(data);
-        // const savedUploads = JSON.parse(localStorage.getItem('uploads') || '[]');
-        // if (savedUploads.includes(filename)) {
-        //     uploadStatus.style.display = 'inline-block';
-        //     uploadStatus.innerHTML = 'File already uploaded.'
-        //     uploadStatus.className = 'error';
-        //     setTimeout(() => {
-        //         uploadStatus.style.display = 'none';
-        //         uploadStatus.innerHTML = '';
-        //     }, 3000);
-        //     return;
-        // }
-        uploadStatus.style.display = 'inline-block';
-        uploadStatus.innerHTML = 'upload successful!';
-        uploadStatus.className = 'success';
-        setTimeout(() => {
-            uploadStatus.style.display = 'none';
-        }, 3000);
-        const uploadFileContainer = document.createElement('div');
-        uploadFileContainer.className = 'upload-file-container';
-        const uploadFile = document.createElement('p');
-        uploadFile.className = 'upload-file';
-        uploadFile.innerHTML = filename;
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.value = filename;
-        const deleteUploadButton = document.createElement('button');
-        deleteUploadButton.innerHTML = 'Delete File';
-        deleteUploadButton.className = 'delete-upload-btn';
-        uploadFileContainer.appendChild(checkbox);
-        uploadFileContainer.appendChild(uploadFile);
-        uploadFileContainer.appendChild(deleteUploadButton);
-        uploads.appendChild(uploadFileContainer);
+        uploads.appendChild(createUploadItems(filename));
         savedUploads.push(filename);
         localStorage.setItem('uploads', JSON.stringify(savedUploads));
-        // Delete upload button
-        deleteUploadButton.addEventListener('click', () => {
-            if (!confirm('Are you sure you want to delete this file?')) return;
-            uploadFileContainer.remove();
-            const savedUploads = JSON.parse(localStorage.getItem('uploads'));
-            // console.log(typeof savedUploads, savedUploads);
-            const updatedUploads = savedUploads.filter(uploads => uploads !== filename);
-            localStorage.setItem('uploads', JSON.stringify(updatedUploads));
-        });
     })
     .catch(error => {
         uploadStatus.style.display = 'inline-block';
@@ -275,7 +247,6 @@ fileUpload.addEventListener('change', () => {
 
 getReport.addEventListener('click', () => {
     const checkedValue = document.querySelectorAll('input[type="checkbox"]:checked');
-    // const filename = checkedValue[0].value;
     // Check if any checkboxes are checked
     if (checkedValue.length === 0) {
         checkedStatus.style.display = 'inline-block';
@@ -308,30 +279,9 @@ getReport.addEventListener('click', () => {
         })
         .then(data => {
             console.log(data);
-            const reportLinkContainer = document.createElement('div');
-            reportLinkContainer.className = 'report-link-container';
-            const reportLink = document.createElement('a');
-            reportLink.className = 'report-link';
-            reportLink.innerHTML = filename;
-            reportStore[filename] = data;
+            reportStore[filename] = data; 
             localStorage.setItem('reports', JSON.stringify(reportStore));
-            const deleteReportButton = document.createElement('button');
-            deleteReportButton.innerHTML = 'Delete Report';
-            deleteReportButton.className = 'delete-report-btn';
-            reportLinkContainer.appendChild(reportLink);
-            reportLinkContainer.appendChild(deleteReportButton);
-            reports.appendChild(reportLinkContainer);
-            reportLink.addEventListener('click', (e) => {
-                createReportLinks(filename, data);
-            });
-            deleteReportButton.addEventListener('click', () => {
-                if (!confirm("Are you sure you want to delete this report?")) return;
-                reportLinkContainer.remove();
-                const savedReports = JSON.parse(localStorage.getItem('reports'));
-                delete savedReports[filename];
-                localStorage.setItem('reports', JSON.stringify(savedReports));
-                delete reportStore[filename];
-            });   
+            reports.appendChild(createReportLinkContainer(filename));
         });
     });
 });
@@ -389,10 +339,5 @@ modalCloseButton.addEventListener('click', () => {
     modalOverlay.style.display = 'none';
 });
 
-// if (reports.hasChildNodes()) {
-//     const deleteAllReportsButton = document.createElement('button');
-//     deleteAllReportsButton.innerHTML = 'Delete All';
-//     deleteAllReportsButton.className = 'delete-all-btn';
-//     reports.appendChild(deleteAllReportsButton);
-// } 
+
 
